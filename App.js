@@ -43,7 +43,7 @@ function App() {
                   navigate('/hot');
                 }}
               >
-                Hot+18
+                Hot+15111
               </Nav.Link>
             </Nav>
           </Container>
