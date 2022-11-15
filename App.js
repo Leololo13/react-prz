@@ -9,6 +9,7 @@ import { Detail } from './routes/Detail';
 import axios from 'axios';
 import Scrap from './routes/Scrap';
 import LatestItem from './routes/LatestItem';
+import { useQuery } from '@tanstack/react-query';
 
 export let Context1 = createContext();
 
@@ -17,11 +18,20 @@ function App() {
   const [cnt, setCnt] = useState(2);
   const [btntoggle, setBtntoggle] = useState(true);
 
+  let result = useQuery(['name'], () =>
+    axios
+      .get('https://codingapple1.github.io/userdata.json')
+      .then((a) => a.data)
+  );
+
   let navigate = useNavigate();
+
   useEffect(() => {
     localStorage.length == 0 &&
       localStorage.setItem('watched', JSON.stringify([]));
   }, []);
+
+  console.log(result.data);
   return (
     <div className='App'>
       <Navbar fixed='top' bg='dark' variant='dark' className='Navbar'>
@@ -55,6 +65,11 @@ function App() {
               }}
             >
               Scrap
+            </Nav.Link>
+
+            <Nav.Link>
+              {result.isLoading ? 'loading' : result.data.name}
+              {result.error && 'error'}
             </Nav.Link>
           </Nav>
         </Container>
