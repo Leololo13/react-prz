@@ -1,13 +1,14 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Nav, Container, Navbar, Row } from 'react-bootstrap';
-import { Component, createContext, useState } from 'react';
+import { Component, createContext, useEffect, useState } from 'react';
 import data from './data';
 import { ItemCol } from './routes/ItemCol.jsx';
 import { Routes, Route, useNavigate, Outlet } from 'react-router-dom';
 import { Detail } from './routes/Detail';
 import axios from 'axios';
 import Scrap from './routes/Scrap';
+import LatestItem from './routes/LatestItem';
 
 export let Context1 = createContext();
 
@@ -17,10 +18,13 @@ function App() {
   const [btntoggle, setBtntoggle] = useState(true);
 
   let navigate = useNavigate();
-
+  useEffect(() => {
+    localStorage.length == 0 &&
+      localStorage.setItem('watched', JSON.stringify([]));
+  }, []);
   return (
     <div className='App'>
-      <Navbar bg='dark' variant='dark' className='Navbar'>
+      <Navbar fixed='top' bg='dark' variant='dark' className='Navbar'>
         <Container>
           <Navbar.Brand href='#home'>Leolo13</Navbar.Brand>
           <Nav className='me-auto'>
@@ -55,7 +59,9 @@ function App() {
           </Nav>
         </Container>
       </Navbar>
-
+      <aside className='aside-latest'>
+        <LatestItem shoes={shoes}></LatestItem>
+      </aside>
       <Routes>
         <Route path='*' element={<div>page not found</div>}></Route>
         <Route path='/event' element={<Event></Event>}>
