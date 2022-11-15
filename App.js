@@ -31,7 +31,6 @@ function App() {
       localStorage.setItem('watched', JSON.stringify([]));
   }, []);
 
-  console.log(result.data);
   return (
     <div className='App'>
       <Navbar fixed='top' bg='dark' variant='dark' className='Navbar'>
@@ -74,61 +73,65 @@ function App() {
           </Nav>
         </Container>
       </Navbar>
-      <aside className='aside-latest'>
-        <LatestItem shoes={shoes}></LatestItem>
-      </aside>
-      <Routes>
-        <Route path='*' element={<div>page not found</div>}></Route>
-        <Route path='/event' element={<Event></Event>}>
-          <Route path='one' element={<div>첫 주문시 양배추즙</div>}></Route>
-          <Route path='two' element={<div>생일기념 쿠폰 받기</div>}></Route>
-        </Route>
-        <Route
-          path='/'
-          element={
-            <>
-              <div className='mainbg'></div>
-              <Row xs={1} md={3} className='justify-content-xs-center'>
-                <ItemCol shoes={shoes}></ItemCol>
-                {/* <Card shoes={shoes}></Card> */}
-              </Row>{' '}
-              {btntoggle == true ? (
-                <button
-                  onClick={() => {
-                    axios
-                      .get(
-                        `https://codingapple1.github.io/shop/data${cnt}.json`
-                      )
-                      .then((result) => {
-                        let copy = [...shoes, ...result.data];
-                        // copy.concat
-                        setShoes(copy);
-                        setCnt(cnt + 1);
-                      })
-                      .catch(() => {
-                        alert('No more Items');
-                        setCnt(2);
-                        setBtntoggle(false);
-                      });
-                  }}
-                >
-                  더 보기...
-                </button>
-              ) : null}
-            </>
-          }
-        ></Route>
-        <Route
-          path='/detail/:id'
-          element={<Detail shoes={shoes}></Detail>}
-        ></Route>
-        <Route path='/scrap' element={<Scrap></Scrap>}></Route>
+      <div className='gap'></div>
 
-        <Route path='/about' element={<About></About>}>
-          <Route path='member' element={<div>members</div>}></Route>
-          <Route path='location' element={<div>location</div>}></Route>
-        </Route>
-      </Routes>
+      <main>
+        <aside className='aside-latest'>
+          <LatestItem shoes={shoes}></LatestItem>
+        </aside>
+        <Routes>
+          <Route path='/event' element={<Event></Event>}>
+            <Route path='one' element={<div>첫 주문시 양배추즙</div>}></Route>
+            <Route path='two' element={<div>생일기념 쿠폰 받기</div>}></Route>
+          </Route>
+          <Route
+            path='/'
+            element={
+              <>
+                <div className='mainbg'></div>
+                <Row xs={1} md={3} className='justify-content-xs-center'>
+                  <ItemCol shoes={shoes}></ItemCol>
+                  {/* <Card shoes={shoes}></Card> */}
+                </Row>{' '}
+                {btntoggle == true ? (
+                  <button
+                    onClick={() => {
+                      axios
+                        .get(
+                          `https://codingapple1.github.io/shop/data${cnt}.json`
+                        )
+                        .then((result) => {
+                          let copy = [...shoes, ...result.data];
+                          // copy.concat
+                          setShoes(copy);
+                          setCnt(cnt + 1);
+                        })
+                        .catch(() => {
+                          alert('No more Items');
+                          setCnt(2);
+                          setBtntoggle(false);
+                        });
+                    }}
+                  >
+                    더 보기...
+                  </button>
+                ) : null}
+              </>
+            }
+          ></Route>
+          <Route
+            path='/detail/:id'
+            element={<Detail shoes={shoes}></Detail>}
+          ></Route>
+          <Route path='/scrap' element={<Scrap></Scrap>}></Route>
+
+          <Route path='/about' element={<About></About>}>
+            <Route path='member' element={<div>members</div>}></Route>
+            <Route path='location' element={<div>location</div>}></Route>
+          </Route>
+          <Route path='*' element={<div>page not found</div>}></Route>
+        </Routes>
+      </main>
     </div>
   );
 }
